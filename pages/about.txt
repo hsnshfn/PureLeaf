@@ -1,0 +1,28 @@
+About This Platform
+
+PureLeaf is a lightweight, fast, and beautifully simple publishing platform built on a single principle: content should live in plain text files, not locked inside databases or complex CMS systems.
+
+## Our Philosophy
+
+The web has become unnecessarily complicated. Most informational websites do not need a database, a server-side runtime, or a build pipeline. They need good writing, clear structure, and fast delivery.
+
+PureLeaf strips everything back to the essentials: HTML for structure, CSS for style, JavaScript for interactivity, and plain .txt files for content. The result is a site that loads in milliseconds, costs almost nothing to host, and can be updated by anyone who can open a text editor.
+
+## How It Works
+
+Every page on this site reads its content from a corresponding .txt file at page load time. When you want to update a page, you update the text file. No admin panel, no login required, no database migration.
+
+Blog posts follow the same principle. A single post.html template reads any article from any .txt file based on the URL. To publish a new article, you add a .txt file and one line to the posts.json index. That is the entire workflow.
+
+## Who This Is For
+
+PureLeaf is ideal for:
+- Informational websites and landing pages
+- Personal blogs and portfolios
+- Small business websites
+- Documentation sites
+- Any project where simplicity and speed matter more than dynamic features
+
+## Built With
+
+This platform uses zero frameworks, zero dependencies, and zero build tools. Everything runs directly in the browser using standard web technologies that have been stable for over a decade. It will still work exactly the same way in another ten years.

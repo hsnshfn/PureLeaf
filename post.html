@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article — PureLeaf</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Pure<span>Leaf</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Article header — filled by JS -->
+    <header class="article-header" id="article-header">
+      <div class="loading">Loading…</div>
+    </header>
+
+    <!-- Hero image sits INSIDE the same narrow container as the header -->
+    <div class="article-hero-wrap">
+      <div class="article-hero-image" id="article-hero"></div>
+    </div>
+
+    <!-- Article body — filled by PureLeaf engine -->
+    <div class="article-body">
+      <a href="blog.html" class="back-link">← Back to Blog</a>
+      <div class="article-content" id="article-content"></div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
+      <a href="about.html">Learn how it works</a>
+    </p>
+  </footer>
+
+  <script src="js/engine.js"></script>
+  <script>
+    async function loadPost() {
+      const slug    = PureLeaf.getParam('slug');
+      const header  = document.getElementById('article-header');
+      const content = document.getElementById('article-content');
+
+      if (!slug) {
+        header.innerHTML = '<p style="color:var(--danger)">No article specified.</p>';
+        return;
+      }
+
+      try {
+        const res   = await fetch('posts.json');
+        const posts = await res.json();
+        const post  = posts.find(p => p.slug === slug);
+
+        if (!post) {
+          header.innerHTML = '<p style="color:var(--danger)">Article not found.</p>';
+          return;
+        }
+
+        document.title = `${post.title} — PureLeaf`;
+
+        header.innerHTML = `
+          <span class="article-category">${PureLeaf.escape(post.category)}</span>
+          <h1>${PureLeaf.escape(post.title)}</h1>
+          <div class="article-meta">${PureLeaf.formatDate(post.date)}</div>
+        `;
+
+        if (post.image) {
+          const heroEl = document.getElementById('article-hero');
+          heroEl.innerHTML = `<img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy">`;
+        }
+
+        await PureLeaf.render(`posts/${slug}.txt`, content, { skipTitle: true });
+
+      } catch (err) {
+        header.innerHTML = '<p style="color:var(--danger)">Failed to load article.</p>';
+        console.error(err);
+      }
+    }
+
+    loadPost();
+  </script>
+
+</body>
+</html>

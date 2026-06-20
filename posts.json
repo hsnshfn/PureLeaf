@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "what-is-digital-marketing",
+    "title": "What Is Digital Marketing? A Complete Overview",
+    "date": "2026-06-15",
+    "category": "Marketing",
+    "image": "https://picsum.photos/seed/marketing/800/450",
+    "excerpt": "Digital marketing encompasses all efforts to promote products or services using digital channels. Learn the fundamentals every business owner must know."
+  },
+  {
+    "slug": "seo-basics-for-beginners",
+    "title": "SEO Basics: How to Get Found on Google",
+    "date": "2026-06-10",
+    "category": "SEO",
+    "image": "https://picsum.photos/seed/seoguide/800/450",
+    "excerpt": "Search Engine Optimization doesn't have to be complicated. This beginner-friendly guide walks you through everything you need to start ranking."
+  },
+  {
+    "slug": "content-strategy-guide",
+    "title": "Building a Content Strategy That Actually Works",
+    "date": "2026-06-01",
+    "category": "Content",
+    "image": "https://picsum.photos/seed/contentstrategy/800/450",
+    "excerpt": "A content strategy without a clear plan is just noise. Discover how to build a focused, measurable approach that drives real results."
+  }
+]

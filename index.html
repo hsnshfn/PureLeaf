@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PureLeaf — Lightweight Publishing</title>
+  <meta name="description" content="A fast, backend-free publishing platform where content lives in plain text files.">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Pure<span>Leaf</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <span class="hero-eyebrow">Zero Backend · Pure Content</span>
+      <h1>Your content lives in<br><em>plain text files</em></h1>
+      <p>
+        A lightweight publishing platform with no database, no CMS, and no complexity.
+        Edit a <code>.txt</code> file, and your page updates instantly.
+      </p>
+      <a href="blog.html" class="btn btn-primary">Read the Blog</a>
+      &nbsp;
+      <a href="about.html" class="btn btn-ghost">How It Works</a>
+    </section>
+
+    <!-- ── Latest Posts ── -->
+    <section class="posts-section">
+      <div class="posts-header">
+        <div>
+          <div class="section-label">Latest Articles</div>
+          <h2>From the Blog</h2>
+        </div>
+        <a href="blog.html" class="btn btn-ghost" style="font-size:0.82rem; padding:0.5rem 1.1rem;">
+          View All →
+        </a>
+      </div>
+
+      <!-- JS fills this in -->
+      <div class="posts-grid" id="posts-grid">
+        <div class="loading">Loading posts…</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
+      <a href="about.html">Learn how it works</a>
+    </p>
+  </footer>
+
+  <script src="js/engine.js"></script>
+  <script>
+    // Load the posts manifest and render cards
+    async function loadPosts() {
+      const grid = document.getElementById('posts-grid');
+      try {
+        const res  = await fetch('posts.json');
+        const posts = await res.json();
+
+        // Show only the 3 most recent on the homepage
+        const recent = posts.slice(0, 3);
+
+        grid.innerHTML = recent.map(post => `
+          <article class="post-card fade-in">
+            ${post.image ? `<div class="post-card-image"><img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy"></div>` : ''}
+            <div class="post-card-category">${PureLeaf.escape(post.category)}</div>
+            <h3>${PureLeaf.escape(post.title)}</h3>
+            <p>${PureLeaf.escape(post.excerpt)}</p>
+            <div class="post-card-meta">
+              <span>${PureLeaf.formatDate(post.date)}</span>
+              <a href="post.html?slug=${encodeURIComponent(post.slug)}" class="post-card-link">
+                Read →
+              </a>
+            </div>
+          </article>
+        `).join('');
+
+      } catch (err) {
+        grid.innerHTML = '<p style="color:var(--danger)">Could not load posts.</p>';
+      }
+    }
+
+    loadPosts();
+  </script>
+
+</body>
+</html>

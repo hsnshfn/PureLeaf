@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — PureLeaf</title>
+  <meta name="description" content="All articles published on PureLeaf.">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Pure<span>Leaf</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="blog-header">
+      <div class="section-label">All Articles</div>
+      <h1>The Blog</h1>
+      <p>Every post is a plain <code>.txt</code> file. Add a file, add a line to <code>posts.json</code>, done.</p>
+    </div>
+
+    <section class="posts-section" style="padding-top: 1.5rem;">
+      <div class="posts-grid" id="posts-grid">
+        <div class="loading">Loading posts…</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
+      <a href="about.html">Learn how it works</a>
+    </p>
+  </footer>
+
+  <script src="js/engine.js"></script>
+  <script>
+    async function loadAllPosts() {
+      const grid = document.getElementById('posts-grid');
+      try {
+        const res   = await fetch('posts.json');
+        const posts = await res.json();
+
+        grid.innerHTML = posts.map((post, i) => `
+          <article class="post-card fade-in" style="animation-delay:${i * 0.07}s">
+            ${post.image ? `<div class="post-card-image"><img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy"></div>` : ''}
+            <div class="post-card-category">${PureLeaf.escape(post.category)}</div>
+            <h3>${PureLeaf.escape(post.title)}</h3>
+            <p>${PureLeaf.escape(post.excerpt)}</p>
+            <div class="post-card-meta">
+              <span>${PureLeaf.formatDate(post.date)}</span>
+              <a href="post.html?slug=${encodeURIComponent(post.slug)}" class="post-card-link">
+                Read →
+              </a>
+            </div>
+          </article>
+        `).join('');
+
+      } catch (err) {
+        grid.innerHTML = '<p style="color:var(--danger)">Could not load posts.</p>';
+      }
+    }
+
+    loadAllPosts();
+  </script>
+
+</body>
+</html>
