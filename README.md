@@ -39,8 +39,13 @@ yoursite/
 │   └── images/             ← (optional) post images
 │       └── my-cover.jpg
 │
-└── pages/
-    └── about.txt           ← Static page content files
+├── pages/
+│   └── about.txt           ← Static page content files
+│
+└── assets/
+    └── images/
+        ├── hero-[sitename].jpg   ← Homepage full-bleed background photo
+        └── README.txt            ← Instructions for whoever adds photos later
 ```
 
 ---
@@ -61,6 +66,17 @@ A **single `post.html` template** serves ALL articles.
 It reads `?slug=` from the URL, finds metadata in `posts.json`, fetches the matching `.txt` file, and renders it.
 
 URL pattern: `post.html?slug=my-article-slug`
+
+### Homepage content
+The homepage body content can also live in a `.txt` file — specifically `pages/home.txt`.
+This keeps the homepage editable without touching HTML, exactly like any other static page:
+
+```javascript
+PureLeaf.render('pages/home.txt', document.getElementById('home-content'));
+```
+
+This is separate from the hero section (which is hardcoded in HTML with stats and headlines).
+`home.txt` holds the descriptive body content that appears *below* the hero.
 
 ---
 
@@ -202,6 +218,7 @@ All styles live in one file. Key CSS custom properties (design tokens):
   --radius       /* border radius base unit */
   --max-w        /* narrow content column (760px) */
   --max-w-wide   /* wide layout (1100px) */
+  --accent-glow    /* semi-transparent version of accent for glow effects (e.g. rgba(accent, 0.15)) */
 }
 ```
 
@@ -222,7 +239,38 @@ All styles live in one file. Key CSS custom properties (design tokens):
 | `.loading` | Animated loading state |
 | `.fade-in` | Fade-in animation |
 | `.btn-primary` / `.btn-ghost` | Button styles |
+| `.power-line` | Full-width glowing accent divider between sections (signature element) |
+| `.stats-strip` / `.stats-strip-inner` | Full-width band of 4 key figures below the hero |
+| `.stat-item-value` / `.stat-item-label` | Number + label pair inside the stats strip |
+| `.hero-eyebrow` | Small uppercase label above the hero H1 |
+| `.hero-stats` / `.hero-stat` | Inline stat group at the bottom of the hero |
+| `.section` / `.section-header` / `.section-eyebrow`/ `.section-title`| Inline stat group at the bottom of the hero |
 
+
+
+### Hero photo pattern
+The homepage hero uses a layered technique to display a full-bleed background photo
+with a dark gradient overlay so text remains readable:
+
+```html
+<section class="hero">
+  <div class="hero-bg">
+    <img src="assets/images/hero-solar.jpg" alt="...">
+  </div>
+  <div class="hero-content">
+    <!-- text, stats, CTAs -->
+  </div>
+</section>
+```
+
+The `.hero-bg` is `position: absolute; inset: 0` with its `img` set to
+`object-fit: cover`. A CSS `::after` pseudo-element on `.hero-bg` provides
+the gradient fade from transparent at the top to ~92% dark at the bottom,
+keeping foreground text always legible regardless of the photo.
+
+Hero photo placement: `assets/images/hero-[sitename].jpg`
+Recommended: 1920×1080px minimum, JPG optimised under 400KB.
+Dark or silhouette-style photos work best with text overlay.
 ---
 
 ## Important CSS Rules (Learned from Debug)
@@ -288,6 +336,7 @@ Choose:
 ### Step 3 — Build in this order
 1. `posts.json` — 3 sample posts with slugs, titles, dates, categories, excerpts, images
 2. `posts/*.txt` — content for all 3 posts using the txt format
+2b. `pages/home.txt` — homepage body content (descriptive text below the hero)
 3. `pages/about.txt` — about page content
 4. `css/main.css` — full stylesheet with new theme tokens
 5. `js/engine.js` — copy engine as-is (no changes needed unless adding features)
