@@ -6,7 +6,7 @@ Search Engine Optimization (SEO) is the practice of improving your website so th
 
 ## How Search Engines Work
 
-Search engines use automated programs called "crawlers" or "spiders" to browse the web, discover pages, and add them to an index. When someone performs a search, the engine looks through this index and ranks pages based on hundreds of factors.
+Search engines use automated programs called crawlers or spiders to browse the web, discover pages, and add them to an index. When someone performs a search, the engine looks through this index and ranks pages based on hundreds of factors.
 
 The three pillars of what search engines evaluate are:
 - Relevance: Does your content actually answer the searcher's question?
@@ -17,9 +17,9 @@ The three pillars of what search engines evaluate are:
 
 Keywords are the words and phrases people type into search engines. Your job is to identify which keywords your audience uses and create content that addresses those queries.
 
-Start with simple tools like Google Search itself. Type a topic and look at the autocomplete suggestions — those are real searches people make. Also look at the "People Also Ask" boxes and "Related Searches" at the bottom of results pages.
+Start with simple tools like Google Search itself. Type a topic and look at the autocomplete suggestions — those are real searches people make. Also look at the People Also Ask boxes and Related Searches at the bottom of results pages.
 
-Long-tail keywords — longer, more specific phrases — are often easier to rank for and attract more qualified visitors. "Digital marketing tips for restaurants" is far more specific than "marketing tips," and whoever searches it is much closer to being your ideal customer.
+Long-tail keywords — longer, more specific phrases — are often easier to rank for and attract more qualified visitors.
 
 [image: https://picsum.photos/seed/keywords/760/340 | An illustration of keyword research showing search volume and competition]
 
@@ -31,8 +31,6 @@ Once you have your keywords, use them naturally in these key places:
 - The first paragraph of your content
 - Image file names and alt text
 - The URL slug of the page
-
-Never stuff keywords unnaturally. Write for humans first. Google's algorithms are sophisticated enough to understand context, and keyword stuffing will hurt more than help.
 
 ## Technical SEO Basics
 
@@ -46,6 +44,4 @@ Install an SSL certificate so your site uses HTTPS. This is a basic trust and se
 
 Authority comes from other websites linking to yours. These backlinks act as votes of confidence. One link from a highly respected website in your industry is worth far more than dozens of links from low-quality sources.
 
-Earn backlinks by creating content worth linking to: original research, comprehensive guides, useful tools, or unique perspectives. Reach out to relevant websites and publications to share your content with them.
-
-SEO is a long game. Results typically take three to six months to appear. But the traffic you earn through SEO is free, sustainable, and compounds over time — making it one of the most valuable long-term investments a business can make.
+SEO is a long game. Results typically take three to six months to appear. But the traffic you earn through SEO is free, sustainable, and compounds over time.

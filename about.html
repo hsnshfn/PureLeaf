@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — PureLeaf</title>
   <meta name="description" content="Learn how PureLeaf works — a backend-free publishing platform powered by plain text files.">
+  <meta name="generator" content="PureLeaf">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -28,10 +30,6 @@
     </div>
 
     <div class="page-body">
-      <!--
-        This entire page's content comes from pages/about.txt
-        To update it, just edit that file. No HTML knowledge needed.
-      -->
       <div class="page-content" id="page-content"></div>
     </div>
 
@@ -39,13 +37,11 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="about.html">Learn how it works</a>
-    </p>
+      <a href="about.html">Learn how it works</a></p>
   </footer>
 
   <script src="js/engine.js"></script>
   <script>
-    // One line to load and render the entire page content from a txt file
     PureLeaf.render('pages/about.txt', document.getElementById('page-content'));
   </script>
 

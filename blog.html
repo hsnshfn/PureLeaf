@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog — PureLeaf</title>
   <meta name="description" content="All articles published on PureLeaf.">
+  <meta name="generator" content="PureLeaf">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -38,8 +40,7 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="about.html">Learn how it works</a>
-    </p>
+      <a href="about.html">Learn how it works</a></p>
   </footer>
 
   <script src="js/engine.js"></script>
@@ -49,7 +50,6 @@
       try {
         const res   = await fetch('posts.json');
         const posts = await res.json();
-
         grid.innerHTML = posts.map((post, i) => `
           <article class="post-card fade-in" style="animation-delay:${i * 0.07}s">
             ${post.image ? `<div class="post-card-image"><img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy"></div>` : ''}
@@ -58,18 +58,14 @@
             <p>${PureLeaf.escape(post.excerpt)}</p>
             <div class="post-card-meta">
               <span>${PureLeaf.formatDate(post.date)}</span>
-              <a href="post.html?slug=${encodeURIComponent(post.slug)}" class="post-card-link">
-                Read →
-              </a>
+              <a href="blog/${encodeURIComponent(post.slug)}" class="post-card-link">Read →</a>
             </div>
           </article>
         `).join('');
-
       } catch (err) {
         grid.innerHTML = '<p style="color:var(--danger)">Could not load posts.</p>';
       }
     }
-
     loadAllPosts();
   </script>
 

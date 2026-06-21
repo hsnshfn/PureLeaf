@@ -6,7 +6,7 @@ PureLeaf is a publishing platform built on a single conviction: the best website
 
 Every major publishing platform adds layers — databases, admin panels, build pipelines, plugins, and caches — to solve problems that most websites never actually have. PureLeaf removes all of that.
 
-Your content lives in plain `.txt` files. Your blog is powered by a single JSON file. Your entire site runs on HTML, CSS, and a small amount of JavaScript. Nothing else.
+Your content lives in plain .txt files. Your blog is powered by a single JSON file. Your entire site runs on HTML, CSS, and a small amount of JavaScript. Nothing else.
 
 ## What You Get
 

@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PureLeaf — Lightweight Publishing</title>
   <meta name="description" content="A fast, backend-free publishing platform where content lives in plain text files.">
+  <meta name="generator" content="PureLeaf">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-  <!-- ── Navigation ── -->
   <nav class="nav">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">Pure<span>Leaf</span></a>
@@ -23,112 +24,69 @@
 
   <main>
 
-    <!-- ── Hero (full-bleed background photo + gradient overlay) ── -->
     <section class="hero">
-      <!-- Background photo layer — replace src with your own image -->
       <div class="hero-bg">
         <img src="https://picsum.photos/seed/pureleaf-hero/1920/1080" alt="Hero background">
       </div>
-
-      <!-- Content layer — sits above the photo -->
       <div class="hero-content">
         <span class="hero-eyebrow">Zero Backend · Pure Content</span>
         <h1>Your content lives in<br><em>plain text files</em></h1>
-        <p>
-          A lightweight publishing platform with no database, no CMS, and no complexity.
-          Edit a <code>.txt</code> file, and your page updates instantly.
-        </p>
+        <p>A lightweight publishing platform with no database, no CMS, and no complexity.
+          Edit a <code>.txt</code> file, and your page updates instantly.</p>
         <a href="blog.html" class="btn btn-primary">Read the Blog</a>
         &nbsp;
         <a href="about.html" class="btn btn-ghost">How It Works</a>
-
-        <!-- Inline stats at the bottom of the hero -->
         <div class="hero-stats">
-          <div class="hero-stat">
-            <strong>0</strong>
-            <span>Dependencies</span>
-          </div>
-          <div class="hero-stat">
-            <strong>&lt;1s</strong>
-            <span>Page Load</span>
-          </div>
-          <div class="hero-stat">
-            <strong>∞</strong>
-            <span>Hosts Supported</span>
-          </div>
+          <div class="hero-stat"><strong>0</strong><span>Dependencies</span></div>
+          <div class="hero-stat"><strong>&lt;1s</strong><span>Page Load</span></div>
+          <div class="hero-stat"><strong>∞</strong><span>Hosts Supported</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ── Stats strip (full-width band below the hero) ── -->
     <div class="stats-strip">
       <div class="stats-strip-inner">
-        <div>
-          <span class="stat-item-value">0</span>
-          <span class="stat-item-label">Lines of Backend Code</span>
-        </div>
-        <div>
-          <span class="stat-item-value">.txt</span>
-          <span class="stat-item-label">Content Format</span>
-        </div>
-        <div>
-          <span class="stat-item-value">3</span>
-          <span class="stat-item-label">Steps to Publish</span>
-        </div>
-        <div>
-          <span class="stat-item-value">100%</span>
-          <span class="stat-item-label">Static & Portable</span>
-        </div>
+        <div><span class="stat-item-value">0</span><span class="stat-item-label">Lines of Backend Code</span></div>
+        <div><span class="stat-item-value">.txt</span><span class="stat-item-label">Content Format</span></div>
+        <div><span class="stat-item-value">3</span><span class="stat-item-label">Steps to Publish</span></div>
+        <div><span class="stat-item-value">100%</span><span class="stat-item-label">Static &amp; Portable</span></div>
       </div>
     </div>
 
-    <!-- ── Power line divider ── -->
     <hr class="power-line">
 
-    <!-- ── Latest Posts ── -->
     <section class="posts-section">
       <div class="posts-header">
         <div>
           <div class="section-label">Latest Articles</div>
           <h2>From the Blog</h2>
         </div>
-        <a href="blog.html" class="btn btn-ghost" style="font-size:0.82rem; padding:0.5rem 1.1rem;">
-          View All →
-        </a>
+        <a href="blog.html" class="btn btn-ghost" style="font-size:0.82rem; padding:0.5rem 1.1rem;">View All →</a>
       </div>
-
-      <!-- JS fills this in from posts.json -->
       <div class="posts-grid" id="posts-grid">
         <div class="loading">Loading posts…</div>
       </div>
     </section>
 
-    <!-- ── Power line divider ── -->
     <hr class="power-line">
 
-    <!-- ── Homepage body content (loaded from pages/home.txt) ── -->
     <div class="home-content-section" id="home-content"></div>
 
   </main>
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="about.html">Learn how it works</a>
-    </p>
+      <a href="about.html">Learn how it works</a></p>
   </footer>
 
   <script src="js/engine.js"></script>
   <script>
-    // Load the posts manifest and render cards
     async function loadPosts() {
       const grid = document.getElementById('posts-grid');
       try {
-        const res  = await fetch('posts.json');
+        const res   = await fetch('posts.json');
         const posts = await res.json();
-
-        // Show only the 3 most recent on the homepage
         const recent = posts.slice(0, 3);
-
         grid.innerHTML = recent.map(post => `
           <article class="post-card fade-in">
             ${post.image ? `<div class="post-card-image"><img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy"></div>` : ''}
@@ -137,21 +95,15 @@
             <p>${PureLeaf.escape(post.excerpt)}</p>
             <div class="post-card-meta">
               <span>${PureLeaf.formatDate(post.date)}</span>
-              <a href="post.html?slug=${encodeURIComponent(post.slug)}" class="post-card-link">
-                Read →
-              </a>
+              <a href="blog/${encodeURIComponent(post.slug)}" class="post-card-link">Read →</a>
             </div>
           </article>
         `).join('');
-
       } catch (err) {
         grid.innerHTML = '<p style="color:var(--danger)">Could not load posts.</p>';
       }
     }
-
-    // Load homepage body content from pages/home.txt
     PureLeaf.render('pages/home.txt', document.getElementById('home-content'));
-
     loadPosts();
   </script>
 
