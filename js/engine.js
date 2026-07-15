@@ -1,5 +1,7 @@
-/**
+/*
  * PureLeaf Engine
+ * Copyright (c) 2026 MehrAfzar TD LTD
+ * Licensed under the MIT License — see LICENSE for details.
  */
 const PureLeaf = {
   async fetchText(path) {
