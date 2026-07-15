@@ -11,13 +11,13 @@ Before writing a single word, answer three questions:
 
 ## Define Your Content Pillars
 
-Content pillars are three to five core themes that your brand consistently covers. Every piece of content you produce should belong to one of these pillars. This creates coherence and builds topical authority over time.
+Content pillars are three to five core themes your brand consistently covers. Every piece of content should belong to one of these pillars. This builds topical authority over time.
 
 ## Choose Your Formats Wisely
 
-Different formats serve different purposes. Long-form blog posts build search authority. Short social posts build daily presence. Videos demonstrate complex ideas. Podcasts build intimacy and trust over time.
+Different formats serve different purposes. Long-form blog posts build search authority. Short social posts build daily presence. Videos demonstrate complex ideas. Podcasts build trust over time.
 
-Do not try to do everything at once. Pick one or two formats you can execute consistently and with quality.
+Pick one or two formats you can execute consistently and with quality before expanding.
 
 ## Build a Content Calendar
 
@@ -30,7 +30,7 @@ A content calendar transforms strategy into execution. At minimum, it should inc
 
 ## Measure What Matters
 
-Vanity metrics feel good but rarely tell you whether content is achieving business goals. Focus on organic search traffic, time on page, lead generation, and revenue attribution.
+Focus on metrics tied to outcomes: organic search traffic, time on page, lead generation, and revenue attribution — not vanity metrics like follower counts.
 
 ## Consistency Is the Strategy
 

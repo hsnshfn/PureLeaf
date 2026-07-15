@@ -15,13 +15,13 @@ The three pillars of what search engines evaluate are:
 
 ## Keyword Research
 
-Keywords are the words and phrases people type into search engines. Your job is to identify which keywords your audience uses and create content that addresses those queries.
+Keywords are the words and phrases people type into search engines. Start with Google autocomplete suggestions and the People Also Ask section.
 
 [image: https://picsum.photos/seed/keywords/760/340 | An illustration of keyword research showing search volume and competition]
 
 ## On-Page Optimization
 
-Once you have your keywords, use them naturally in these key places:
+Use your target keywords naturally in these key places:
 - The page title
 - The main heading (H1)
 - The first paragraph
@@ -30,8 +30,8 @@ Once you have your keywords, use them naturally in these key places:
 
 ## Technical SEO Basics
 
-Your site must be fast. Pages that take more than three seconds to load lose a significant portion of visitors. Your site must also be mobile-friendly and served over HTTPS.
+Your site must be fast, mobile-friendly, and served over HTTPS. These are basic signals that search engines factor into rankings.
 
 ## Building Authority
 
-Authority comes from other websites linking to yours. Earn backlinks by creating content worth linking to: original research, comprehensive guides, useful tools, or unique perspectives.
+Earn backlinks by creating content worth linking to: original research, comprehensive guides, or unique perspectives. SEO is a long game — results typically take three to six months to appear.

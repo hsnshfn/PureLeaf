@@ -1,28 +1,9 @@
-# ============================================================
 # PureLeaf — Pretty URL Rewrite Rules (Apache / cPanel)
-# ============================================================
-# INSTRUCTIONS:
-#   1. Rename this file to .htaccess (remove the .txt extension)
-#   2. Upload to your site root
-#   3. mod_rewrite is enabled by default on virtually all cPanel hosts
-# ============================================================
+# Rename to .htaccess and upload to site root.
 
 Options -Indexes
 RewriteEngine On
-
-# /blog/some-post-slug  →  post.html?slug=some-post-slug
 RewriteRule ^blog/([a-z0-9-]+)/?$  post.html?slug=$1  [L,QSA]
-
-# /blog  →  blog.html
 RewriteRule ^blog/?$  blog.html  [L]
-
-# /about  →  about.html
 RewriteRule ^about/?$  about.html  [L]
-
-# /home  →  index.html
 RewriteRule ^home/?$  index.html  [L]
-
-# Optional fallback (uncomment to send 404s to homepage):
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^(.*)$ index.html [L]

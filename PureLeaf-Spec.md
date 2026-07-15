@@ -356,48 +356,6 @@ Choose:
 
 ---
 
-## Light / Dark Theme Toggle
-
-Every HTML page includes a sun/moon toggle button in the nav (inside `.nav-right`).
-
-**How it works:**
-- `<body>` is dark by default (no class)
-- Clicking the toggle adds/removes `class="light"` on `<body>`
-- All color tokens are redefined inside `body.light { }` in `main.css`
-- The user's choice is saved to `localStorage` under the key `'theme'`
-- An anti-flash inline script in `<head>` reads `localStorage` and applies the class synchronously before first paint, preventing a white/dark flash on page load
-
-**Anti-flash script (required in every page `<head>`, after `<link rel="stylesheet">`):**
-```html
-<script>if(localStorage.getItem('theme')==='light')document.body.classList.add('light');</script>
-```
-
-**Toggle script (in each page's inline `<script>` block):**
-```javascript
-const toggle = document.getElementById('theme-toggle');
-toggle.addEventListener('click', () => {
-  const isLight = document.body.classList.toggle('light');
-  localStorage.setItem('theme', isLight ? 'light' : 'dark');
-});
-```
-
-**Light theme token values** (defined in `body.light` in `main.css`):
-```css
-body.light {
-  --bg:       #f8f7f4;
-  --surface:  #ffffff;
-  --surface2: #f1f0ed;
-  --border:   #dddbd6;
-  --text:     #1a1a2e;
-  --muted:    #6b7280;
-}
-```
-Accent colors (`--accent`, `--accent2`) are unchanged — mint and blue work on both themes.
-
-When building a new site, redefine the light tokens to match that site's palette.
-
----
-
 ## What Can Be Extended Later
 
 | Feature | How |

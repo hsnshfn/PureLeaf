@@ -7,7 +7,7 @@
   <meta name="generator" content="PureLeaf">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/main.css">
-  <script>if(localStorage.getItem('theme')==='light')document.body.classList.add('light');</script>
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
@@ -65,7 +65,7 @@
     // ── Theme toggle ──────────────────────────────────────────
     const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('click', () => {
-      const isLight = document.body.classList.toggle('light');
+      const isLight = document.documentElement.classList.toggle('light');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 

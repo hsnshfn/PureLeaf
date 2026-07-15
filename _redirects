@@ -1,10 +1,5 @@
-# ============================================================
 # PureLeaf — Pretty URL Rewrites (Netlify / Cloudflare Pages)
-# ============================================================
 # Deploy this file as-is in your site root.
-# For Apache / cPanel hosts: use htaccess.txt instead.
-# 200 = silent rewrite (URL stays pretty in the browser)
-# ============================================================
 
 /blog/:slug    /post.html?slug=:slug    200
 /blog          /blog.html               200

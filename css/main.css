@@ -34,7 +34,7 @@
 }
 
 /* ── Light theme token overrides ── */
-body.light {
+html.light {
   --bg:          #f8f7f4;
   --surface:     #ffffff;
   --surface2:    #f1f0ed;
