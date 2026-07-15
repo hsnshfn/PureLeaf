@@ -1,39 +1,28 @@
 # ============================================================
 # PureLeaf — Pretty URL Rewrite Rules (Apache / cPanel)
 # ============================================================
-#
 # INSTRUCTIONS:
-#   1. Rename this file to  .htaccess  (remove the .txt extension)
-#   2. Upload it to your site's root folder
+#   1. Rename this file to .htaccess (remove the .txt extension)
+#   2. Upload to your site root
 #   3. mod_rewrite is enabled by default on virtually all cPanel hosts
-#
-# HOW IT WORKS:
-#   The browser requests /blog/my-article
-#   Apache silently rewrites it to post.html?slug=my-article
-#   The browser stays on the pretty URL — it never sees the rewrite.
-#
 # ============================================================
 
 Options -Indexes
 RewriteEngine On
 
-# ── Blog post pretty URLs ──────────────────────────────────
 # /blog/some-post-slug  →  post.html?slug=some-post-slug
 RewriteRule ^blog/([a-z0-9-]+)/?$  post.html?slug=$1  [L,QSA]
 
-# ── Blog index ────────────────────────────────────────────
 # /blog  →  blog.html
 RewriteRule ^blog/?$  blog.html  [L]
 
-# ── About page ────────────────────────────────────────────
 # /about  →  about.html
 RewriteRule ^about/?$  about.html  [L]
 
-# ── Homepage ──────────────────────────────────────────────
 # /home  →  index.html
 RewriteRule ^home/?$  index.html  [L]
 
-# ── Optional fallback (uncomment to send 404s to homepage) ─
+# Optional fallback (uncomment to send 404s to homepage):
 # RewriteCond %{REQUEST_FILENAME} !-f
 # RewriteCond %{REQUEST_FILENAME} !-d
 # RewriteRule ^(.*)$ index.html [L]

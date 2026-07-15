@@ -25,4 +25,4 @@ PureLeaf is ideal for:
 
 ## Built With
 
-This platform uses zero frameworks, zero dependencies, and zero build tools. Everything runs directly in the browser using standard web technologies that have been stable for over a decade. It will still work exactly the same way in another ten years.
+This platform uses zero frameworks, zero dependencies, and zero build tools. Everything runs directly in the browser using standard web technologies that have been stable for over a decade.

@@ -356,46 +356,45 @@ Choose:
 
 ---
 
-## Favicon
+## Light / Dark Theme Toggle
 
-An SVG favicon lives at `assets/favicon.svg` — a mint leaf icon on a dark circle background.
-Every HTML page references it in `<head>`:
+Every HTML page includes a sun/moon toggle button in the nav (inside `.nav-right`).
 
+**How it works:**
+- `<body>` is dark by default (no class)
+- Clicking the toggle adds/removes `class="light"` on `<body>`
+- All color tokens are redefined inside `body.light { }` in `main.css`
+- The user's choice is saved to `localStorage` under the key `'theme'`
+- An anti-flash inline script in `<head>` reads `localStorage` and applies the class synchronously before first paint, preventing a white/dark flash on page load
+
+**Anti-flash script (required in every page `<head>`, after `<link rel="stylesheet">`):**
 ```html
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script>if(localStorage.getItem('theme')==='light')document.body.classList.add('light');</script>
 ```
 
-SVG favicons work in all modern browsers with no image generation tools needed.
-When building a new site, update the leaf fill color to match that site's `--accent` token.
-
----
-
-## Wappalyzer Detection
-
-Every HTML page includes this tag in `<head>`:
-
-```html
-<meta name="generator" content="PureLeaf">
+**Toggle script (in each page's inline `<script>` block):**
+```javascript
+const toggle = document.getElementById('theme-toggle');
+toggle.addEventListener('click', () => {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
 ```
 
-This is the same fingerprint pattern used by WordPress and other platforms for Wappalyzer detection.
-To get PureLeaf listed in Wappalyzer's public database, submit a pull request to:
-https://github.com/enthec/webappanalyzer
-The pattern to match is: `meta[name="generator"][content="PureLeaf"]`
+**Light theme token values** (defined in `body.light` in `main.css`):
+```css
+body.light {
+  --bg:       #f8f7f4;
+  --surface:  #ffffff;
+  --surface2: #f1f0ed;
+  --border:   #dddbd6;
+  --text:     #1a1a2e;
+  --muted:    #6b7280;
+}
+```
+Accent colors (`--accent`, `--accent2`) are unchanged — mint and blue work on both themes.
 
----
-
-## Pretty URLs
-
-Two rewrite config files are included in the project root:
-
-| File | Host |
-|---|---|
-| `htaccess.txt` | Apache / cPanel — rename to `.htaccess` on upload |
-| `_redirects` | Netlify / Cloudflare Pages — deploy as-is |
-
-Both silently rewrite `/blog/[slug]` → `post.html?slug=[slug]` (status 200 — URL stays pretty).
-Internal links in `index.html` and `blog.html` already use the `/blog/[slug]` format.
+When building a new site, redefine the light tokens to match that site's palette.
 
 ---
 
