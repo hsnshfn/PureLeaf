@@ -26,6 +26,9 @@ yoursite/
 ├── post.html               ← Single post template (reused for ALL articles)
 ├── about.html              ← About / static info page
 ├── posts.json              ← Blog manifest (the "table of contents")
+├── LICENSE                 ← MIT license
+├── htaccess.txt            ← Apache/cPanel pretty-URL rules (rename to .htaccess on deploy)
+├── _redirects              ← Netlify/Cloudflare Pages pretty-URL rules (deploy as-is)
 │
 ├── css/
 │   └── main.css            ← All styles (shared across every page)
@@ -40,9 +43,11 @@ yoursite/
 │       └── my-cover.jpg
 │
 ├── pages/
+│   ├── home.txt            ← Homepage body content (below the hero)
 │   └── about.txt           ← Static page content files
 │
 └── assets/
+    ├── favicon.svg          ← SVG favicon, linked from every page's <head>
     └── images/
         ├── hero-[sitename].jpg   ← Homepage full-bleed background photo
         └── README.txt            ← Instructions for whoever adds photos later
@@ -77,6 +82,23 @@ PureLeaf.render('pages/home.txt', document.getElementById('home-content'));
 
 This is separate from the hero section (which is hardcoded in HTML with stats and headlines).
 `home.txt` holds the descriptive body content that appears *below* the hero.
+
+### Pretty URLs
+Blog links in the HTML (`blog.html` and `index.html`) point to clean paths like:
+```
+blog/my-article-slug
+```
+instead of `post.html?slug=my-article-slug`. Two config files at the site root translate
+these clean paths back to the real `post.html?slug=` request, depending on host:
+
+| File | Host | Notes |
+|---|---|---|
+| `htaccess.txt` | Apache / cPanel | Rename to `.htaccess` on upload — dotfiles can't be committed as-is in some tools/repos |
+| `_redirects` | Netlify / Cloudflare Pages | Deploy as-is, no renaming needed |
+
+Both also rewrite `/blog`, `/about`, and `/home` to their respective `.html` files.
+If a host supports neither (e.g. a bare static file server with no rewrite engine), fall
+back to linking directly to `post.html?slug=...` instead.
 
 ---
 
@@ -185,14 +207,27 @@ The core JS object `PureLeaf` exposes these methods:
 
 | Method | What it does |
 |---|---|
-| `PureLeaf.render(txtPath, el)` | Fetches a .txt file and renders it into an element |
+| `PureLeaf.render(txtPath, el, options)` | Fetches a .txt file and renders it into an element. `options.skipTitle` (default `true`) controls whether the first line is treated as a title and excluded from the body |
 | `PureLeaf.fetchText(path)` | Raw fetch of any .txt file |
-| `PureLeaf.parseContent(raw)` | Converts raw txt into structured tokens |
+| `PureLeaf.parseContent(raw, skipTitle)` | Converts raw txt into structured tokens; `skipTitle` (default `true`) skips the first line |
 | `PureLeaf.renderTokens(tokens)` | Converts tokens into HTML string |
 | `PureLeaf.extractTitle(raw)` | Gets the first line (title) from a txt file |
 | `PureLeaf.getParam(name)` | Reads a URL query parameter (used for `?slug=`) |
 | `PureLeaf.formatDate(isoDate)` | Formats `2026-06-15` → `June 15, 2026` |
 | `PureLeaf.escape(str)` | HTML-escapes strings to prevent XSS |
+
+Every call site in the current codebase still relies on the default `skipTitle: true`, so
+this is a non-breaking option to keep in mind if a future page needs to render a title
+back into the body (e.g. a page that has no separate `<h1>` in its HTML).
+
+`engine.js` also carries an MIT license header comment at the top of the file:
+```javascript
+/*
+ * PureLeaf Engine
+ * Copyright (c) 2026 MehrAfzar TD LTD
+ * Licensed under the MIT License — see LICENSE for details.
+ */
+```
 
 ---
 
@@ -219,8 +254,43 @@ All styles live in one file. Key CSS custom properties (design tokens):
   --max-w        /* narrow content column (760px) */
   --max-w-wide   /* wide layout (1100px) */
   --accent-glow    /* semi-transparent version of accent for glow effects (e.g. rgba(accent, 0.15)) */
+
+  --article-p          /* body-copy color used in article/page/home content blocks */
+  --nav-bg             /* translucent nav background (differs per theme, blurs content behind it) */
+  --hero-overlay-top    /* top color stop of the hero gradient overlay */
+  --hero-overlay-bottom /* bottom color stop of the hero gradient overlay */
+  --icon-sun     /* 0 or 1 — opacity switch for the sun icon in the theme toggle */
+  --icon-moon    /* 0 or 1 — opacity switch for the moon icon in the theme toggle */
 }
 ```
+
+### Light / Dark theme toggle
+Every PureLeaf site now ships with a light/dark mode toggle, not just a single fixed
+dark theme. This works entirely in CSS + a few lines of vanilla JS — no new dependency:
+
+- The `:root` block holds the **dark** (default) token values.
+- An `html.light { ... }` block overrides the subset of tokens that need to change for
+  light mode (`--bg`, `--surface`, `--text`, `--muted`, overlay colors, icon opacities, etc.)
+- A `.theme-toggle` button in the nav (sun/moon SVG icons, cross-faded via the
+  `--icon-sun` / `--icon-moon` opacity variables) toggles the `light` class on `<html>`
+  and persists the choice to `localStorage.setItem('theme', 'light' | 'dark')`.
+- An inline anti-flash script in `<head>`, **before** `main.css` loads, applies the
+  saved theme immediately so there's no flash of the wrong theme on page load:
+  ```html
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
+  ```
+- The toggle-click handler (identical on every page) lives in a small inline `<script>`
+  block near the bottom of the page, right after `js/engine.js` is loaded:
+  ```javascript
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const isLight = document.documentElement.classList.toggle('light');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+  ```
+
+When designing a new theme, pick dark-mode token values first (as before), then decide
+the light-mode overrides for the same token names inside `html.light`.
 
 ### Key layout classes:
 | Class | Purpose |
@@ -245,6 +315,12 @@ All styles live in one file. Key CSS custom properties (design tokens):
 | `.hero-eyebrow` | Small uppercase label above the hero H1 |
 | `.hero-stats` / `.hero-stat` | Inline stat group at the bottom of the hero |
 | `.section` / `.section-header` / `.section-eyebrow`/ `.section-title`| Inline stat group at the bottom of the hero |
+| `.theme-toggle` | Light/dark mode toggle button in the nav (sun/moon icon swap) |
+| `.container` / `.container--narrow` | Generic max-width wrappers (`--max-w-wide` / `--max-w`) for content outside the hero |
+| `.home-content-section` | Wraps the rendered `home.txt` body content below the hero on the homepage |
+| `.blog-header` | Title/intro block at the top of `blog.html` |
+| `.post-card-image` | Cover-image container inside a `.post-card`, with hover zoom on the `img` |
+| `.back-link` | "← Back to Blog" link at the top of an article's body on `post.html` |
 
 
 
@@ -281,8 +357,20 @@ These must always be present to avoid layout bugs:
 /* Hero image — must have these to render full width */
 .article-hero-wrap {
   width: 100%;
+  max-width: var(--max-w);   /* caps the hero to the reading column, not the full viewport */
+  margin: 0 auto;
   box-sizing: border-box;
 }
+
+.article-hero-image {
+  width: 100%;
+  aspect-ratio: 16 / 7;       /* fixed ratio avoids layout shift while the image loads */
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface); /* placeholder color visible before the image paints */
+}
+
+.article-hero-image:empty { display: none; }  /* posts with no cover image collapse cleanly */
 
 .article-hero-image img {
   width: 100% !important;
@@ -295,6 +383,10 @@ These must always be present to avoid layout bugs:
 The global `img { max-width: 100%; }` reset fights the hero image width.  
 The `!important` overrides are intentional and required.
 
+Note this differs from the article's inline hero *background* photo (the homepage
+`.hero-bg` pattern below) — `.article-hero-wrap`/`.article-hero-image` is specifically
+the per-post cover image shown at the top of `post.html`.
+
 ---
 
 ## SEO Notes
@@ -303,7 +395,9 @@ The `!important` overrides are intentional and required.
 - On `post.html`, the `<title>` is updated dynamically by JS: `document.title = post.title`
 - Google crawls JS-rendered content — the fetch-based approach works fine for SEO
 - For best results, keep `posts.json` excerpts well-written (they can be used as meta descriptions)
-- All URLs are clean and descriptive: `post.html?slug=seo-basics-for-beginners`
+- All URLs are clean and descriptive. With `htaccess.txt`/`_redirects` deployed, the
+  public-facing URL is `blog/seo-basics-for-beginners`; the underlying request is still
+  `post.html?slug=seo-basics-for-beginners` on hosts without rewrite support
 
 ---
 
@@ -312,6 +406,22 @@ The `!important` overrides are intentional and required.
 - **Any static host** works: cPanel, Netlify, GitHub Pages, Cloudflare Pages
 - Must be served over HTTP/HTTPS — `fetch()` does NOT work when opening HTML files directly from the filesystem (`file://`)
 - HTTPS recommended (free via Let's Encrypt on most hosts) — improves SEO and trust
+
+---
+
+## Licensing & Attribution
+
+- PureLeaf itself (the engine, spec, and boilerplate) is released under the **MIT License**.
+  A `LICENSE` file belongs at the root of every PureLeaf-based repo, and `js/engine.js`
+  carries a short MIT header comment.
+- Every HTML page includes `<meta name="generator" content="PureLeaf">` in the `<head>`.
+  This is a standard convention (the same one WordPress/Squarespace/etc. use) that lets
+  tools like Wappalyzer identify a site as PureLeaf-built without any tracking or
+  phone-home behavior — it's just a static meta tag.
+- Client sites built *on top of* PureLeaf (e.g. a specific business's website) are
+  separate works from the platform itself — the MIT license covers the reusable
+  engine/boilerplate, not necessarily a given client's content or branding. Confirm
+  copyright attribution per project.
 
 ---
 
@@ -338,13 +448,17 @@ Choose:
 2. `posts/*.txt` — content for all 3 posts using the txt format
 2b. `pages/home.txt` — homepage body content (descriptive text below the hero)
 3. `pages/about.txt` — about page content
-4. `css/main.css` — full stylesheet with new theme tokens
+4. `css/main.css` — full stylesheet with new theme tokens, including `html.light` overrides
 5. `js/engine.js` — copy engine as-is (no changes needed unless adding features)
 6. `index.html` — homepage
 7. `blog.html` — blog index
 8. `post.html` — single post template
 9. `about.html` — about page
-10. Package as `.zip` and deliver
+10. `assets/favicon.svg` — themed favicon (reuse an existing one, or design a new SVG mark
+    matching the site's accent color)
+11. `htaccess.txt` and `_redirects` — pretty-URL rules (copy as-is, no per-site changes needed)
+12. `LICENSE` — MIT license file
+13. Package as `.zip` and deliver
 
 ### Step 4 — Always include
 - Sticky nav with active link highlighting
@@ -353,6 +467,15 @@ Choose:
 - `fade-in` animation on content load
 - Footer with site name
 - The hero image CSS fix (`!important` overrides) — always include this
+- Light/dark theme toggle (`.theme-toggle` button + `html.light` CSS overrides + the
+  anti-flash inline script in `<head>`) — include on every page, not just the homepage
+- `assets/favicon.svg` linked via `<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">`
+- `<meta name="generator" content="PureLeaf">` in every page's `<head>` — lets tech-detection
+  tools like Wappalyzer identify the platform
+- `htaccess.txt` and `_redirects` at the site root for pretty blog URLs (`/blog/slug`
+  instead of `post.html?slug=slug`) — deliver both regardless of which host the client
+  ends up on, since renaming is a one-line fix but a missing file isn't
+- `LICENSE` file (MIT) at the site root
 
 ---
 
@@ -363,7 +486,6 @@ Choose:
 | Search | JS that filters `posts.json` by keyword |
 | Tags/categories | Filter `posts.json` by `category` field |
 | Reading time | Count words in txt, estimate at 200wpm |
-| Dark/light toggle | Toggle a CSS class on `<body>` |
 | RSS feed | A static `feed.xml` updated manually |
 | Contact form | Use Formspree or similar (no backend needed) |
 | Comments | Embed Disqus or Utterances (GitHub-based) |
