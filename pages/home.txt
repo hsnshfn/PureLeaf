@@ -1,3 +1,23 @@
-Welcome
+Welcome to PureLeaf
 
-Content here.
+PureLeaf is a publishing platform built on a single conviction: the best websites are the simplest ones.
+
+## Why Plain Text?
+
+Every major publishing platform adds layers — databases, admin panels, build pipelines, plugins, and caches — to solve problems that most websites never actually have. PureLeaf removes all of that.
+
+Your content lives in plain `.txt` files. Your blog is powered by a single JSON file. Your entire site runs on HTML, CSS, and a small amount of JavaScript. Nothing else.
+
+## What You Get
+
+When you strip away the complexity, you get things that matter:
+- Pages that load in under a second
+- A site you can host anywhere for nearly nothing
+- Content you can edit in any text editor on any device
+- Zero vendor lock-in — your files are just files
+
+## Built to Last
+
+Technologies come and go. Frameworks become abandoned. Databases require maintenance. But HTML, CSS, and plain text are as old as the web itself — and they will work exactly the same way ten years from now.
+
+PureLeaf is designed to be the last publishing platform you ever need to migrate away from, because there is nothing to migrate. Your content is already in the most portable format that exists.
