@@ -6,25 +6,31 @@
   <title>PureLeaf — Lightweight Publishing</title>
   <meta name="description" content="A fast, backend-free publishing platform where content lives in plain text files.">
   <meta name="generator" content="PureLeaf">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/css/main.css">
-  <!-- Anti-flash: apply saved theme before first paint -->
+  <script>
+    (() => {
+      const base = document.createElement('base');
+      const path = window.location.pathname;
+      base.href = path.includes('/PureLeaf/') ? '/PureLeaf/' : '/';
+      document.head.appendChild(base);
+    })();
+  </script>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Pure<span>Leaf</span></a>
+      <a href="./" class="nav-logo">Pure<span>Leaf</span></a>
       <div class="nav-right">
         <ul class="nav-links" id="nav-links">
-          <li><a href="/" class="active">Home</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
+          <li><a href="./" class="active">Home</a></li>
+          <li><a href="blog/">Blog</a></li>
+          <li><a href="about/">About</a></li>
         </ul>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <span class="icon-wrap">
-            <!-- Sun icon — shown in light mode -->
             <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
@@ -32,7 +38,6 @@
               <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
-            <!-- Moon icon — shown in dark mode -->
             <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
@@ -56,9 +61,9 @@
         <h1>Your content lives in<br><em>plain text files</em></h1>
         <p>A lightweight publishing platform with no database, no CMS, and no complexity.
           Edit a <code>.txt</code> file, and your page updates instantly.</p>
-        <a href="/blog" class="btn btn-primary">Read the Blog</a>
+        <a href="blog/" class="btn btn-primary">Read the Blog</a>
         &nbsp;
-        <a href="/about" class="btn btn-ghost">How It Works</a>
+        <a href="about/" class="btn btn-ghost">How It Works</a>
         <div class="hero-stats">
           <div class="hero-stat"><strong>0</strong><span>Dependencies</span></div>
           <div class="hero-stat"><strong>&lt;1s</strong><span>Page Load</span></div>
@@ -84,7 +89,7 @@
           <div class="section-label">Latest Articles</div>
           <h2>From the Blog</h2>
         </div>
-        <a href="/blog" class="btn btn-ghost" style="font-size:0.82rem; padding:0.5rem 1.1rem;">View All →</a>
+        <a href="blog/" class="btn btn-ghost" style="font-size:0.82rem; padding:0.5rem 1.1rem;">View All →</a>
       </div>
       <div class="posts-grid" id="posts-grid">
         <div class="loading">Loading posts…</div>
@@ -99,19 +104,17 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="/about">Learn how it works</a></p>
+      <a href="about/">Learn how it works</a></p>
   </footer>
 
-  <script src="/js/engine.js"></script>
+  <script src="js/engine.js"></script>
   <script>
-    // ── Theme toggle ──────────────────────────────────────────
     const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('click', () => {
       const isLight = document.documentElement.classList.toggle('light');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
-    // ── Mobile nav toggle ────────────────────────────────────
     const hamburger = document.getElementById('nav-hamburger');
     const navLinks = document.getElementById('nav-links');
     hamburger.addEventListener('click', () => {
@@ -123,11 +126,10 @@
       navLinks.classList.remove('open');
     }));
 
-    // ── Posts ─────────────────────────────────────────────────
     async function loadPosts() {
       const grid = document.getElementById('posts-grid');
       try {
-        const res    = await fetch('/posts.json');
+        const res    = await fetch('posts.json');
         const posts  = await res.json();
         const recent = posts.slice(0, 3);
         grid.innerHTML = recent.map(post => `
@@ -138,7 +140,7 @@
             <p>${PureLeaf.escape(post.excerpt)}</p>
             <div class="post-card-meta">
               <span>${PureLeaf.formatDate(post.date)}</span>
-              <a href="/blog/${encodeURIComponent(post.slug)}" class="post-card-link">Read →</a>
+              <a href="blog/${encodeURIComponent(post.slug)}/" class="post-card-link">Read →</a>
             </div>
           </article>
         `).join('');
@@ -147,7 +149,7 @@
       }
     }
 
-    PureLeaf.render('/pages/home.txt', document.getElementById('home-content'));
+    PureLeaf.render('pages/home.txt', document.getElementById('home-content'));
     loadPosts();
   </script>
 

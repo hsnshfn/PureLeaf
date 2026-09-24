@@ -14,20 +14,20 @@
       document.head.appendChild(base);
     })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../css/main.css">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="./" class="nav-logo">Pure<span>Leaf</span></a>
+      <a href="../" class="nav-logo">Pure<span>Leaf</span></a>
       <div class="nav-right">
         <ul class="nav-links" id="nav-links">
-          <li><a href="./">Home</a></li>
-          <li><a href="blog/">Blog</a></li>
-          <li><a href="./" class="active">About</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="./" class="active">Blog</a></li>
+          <li><a href="../about/">About</a></li>
         </ul>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <span class="icon-wrap">
@@ -65,10 +65,10 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="./">Learn how it works</a></p>
+      <a href="../">Learn how it works</a></p>
   </footer>
 
-  <script src="js/engine.js"></script>
+  <script src="../js/engine.js"></script>
   <script>
     const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('click', () => {
@@ -87,7 +87,7 @@
       navLinks.classList.remove('open');
     }));
 
-    PureLeaf.render('pages/about.txt', document.getElementById('page-content'));
+    PureLeaf.render('../pages/about.txt', document.getElementById('page-content'));
   </script>
 
 </body>

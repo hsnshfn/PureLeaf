@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — PureLeaf</title>
-  <meta name="description" content="Learn how PureLeaf works — a backend-free publishing platform powered by plain text files.">
+  <title>Blog — PureLeaf</title>
+  <meta name="description" content="All articles published on PureLeaf.">
   <meta name="generator" content="PureLeaf">
   <script>
     (() => {
@@ -14,20 +14,20 @@
       document.head.appendChild(base);
     })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../css/main.css">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="./" class="nav-logo">Pure<span>Leaf</span></a>
+      <a href="../" class="nav-logo">Pure<span>Leaf</span></a>
       <div class="nav-right">
         <ul class="nav-links" id="nav-links">
-          <li><a href="./">Home</a></li>
-          <li><a href="blog/">Blog</a></li>
-          <li><a href="./" class="active">About</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="./" class="active">Blog</a></li>
+          <li><a href="../about/">About</a></li>
         </ul>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <span class="icon-wrap">
@@ -52,23 +52,26 @@
 
   <main>
 
-    <div class="page-header">
-      <div class="section-label">The Platform</div>
-      <h1>About PureLeaf</h1>
+    <div class="blog-header">
+      <div class="section-label">All Articles</div>
+      <h1>The Blog</h1>
+      <p>Every post is a plain <code>.txt</code> file. Add a file, add a line to <code>posts.json</code>, done.</p>
     </div>
 
-    <div class="page-body">
-      <div class="page-content" id="page-content"></div>
-    </div>
+    <section class="posts-section" style="padding-top: 1.5rem;">
+      <div class="posts-grid" id="posts-grid">
+        <div class="loading">Loading posts…</div>
+      </div>
+    </section>
 
   </main>
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="./">Learn how it works</a></p>
+      <a href="../about/">Learn how it works</a></p>
   </footer>
 
-  <script src="js/engine.js"></script>
+  <script src="../js/engine.js"></script>
   <script>
     const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('click', () => {
@@ -87,7 +90,29 @@
       navLinks.classList.remove('open');
     }));
 
-    PureLeaf.render('pages/about.txt', document.getElementById('page-content'));
+    async function loadAllPosts() {
+      const grid = document.getElementById('posts-grid');
+      try {
+        const res   = await fetch('../posts.json');
+        const posts = await res.json();
+        grid.innerHTML = posts.map((post, i) => `
+          <article class="post-card fade-in" style="animation-delay:${i * 0.07}s">
+            ${post.image ? `<div class="post-card-image"><img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy"></div>` : ''}
+            <div class="post-card-category">${PureLeaf.escape(post.category)}</div>
+            <h3>${PureLeaf.escape(post.title)}</h3>
+            <p>${PureLeaf.escape(post.excerpt)}</p>
+            <div class="post-card-meta">
+              <span>${PureLeaf.formatDate(post.date)}</span>
+              <a href="${encodeURIComponent(post.slug)}/" class="post-card-link">Read →</a>
+            </div>
+          </article>
+        `).join('');
+      } catch (err) {
+        grid.innerHTML = '<p style="color:var(--danger)">Could not load posts.</p>';
+      }
+    }
+
+    loadAllPosts();
   </script>
 
 </body>

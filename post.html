@@ -5,20 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Article — PureLeaf</title>
   <meta name="generator" content="PureLeaf">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/css/main.css">
+  <script>
+    (() => {
+      const base = document.createElement('base');
+      const path = window.location.pathname;
+      base.href = path.includes('/PureLeaf/') ? '/PureLeaf/' : '/';
+      document.head.appendChild(base);
+    })();
+  </script>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Pure<span>Leaf</span></a>
+      <a href="./" class="nav-logo">Pure<span>Leaf</span></a>
       <div class="nav-right">
         <ul class="nav-links" id="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/blog" class="active">Blog</a></li>
-          <li><a href="/about">About</a></li>
+          <li><a href="./">Home</a></li>
+          <li><a href="blog/" class="active">Blog</a></li>
+          <li><a href="about/">About</a></li>
         </ul>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <span class="icon-wrap">
@@ -52,7 +60,7 @@
     </div>
 
     <div class="article-body">
-      <a href="/blog" class="back-link">← Back to Blog</a>
+      <a href="blog/" class="back-link">← Back to Blog</a>
       <div class="article-content" id="article-content"></div>
     </div>
 
@@ -60,19 +68,17 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="/about">Learn how it works</a></p>
+      <a href="about/">Learn how it works</a></p>
   </footer>
 
-  <script src="/js/engine.js"></script>
+  <script src="js/engine.js"></script>
   <script>
-    // ── Theme toggle ──────────────────────────────────────────
     const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('click', () => {
       const isLight = document.documentElement.classList.toggle('light');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
-    // ── Mobile nav toggle ────────────────────────────────────
     const hamburger = document.getElementById('nav-hamburger');
     const navLinks = document.getElementById('nav-links');
     hamburger.addEventListener('click', () => {
@@ -84,9 +90,8 @@
       navLinks.classList.remove('open');
     }));
 
-    // ── Article loader ────────────────────────────────────────
     async function loadPost() {
-      const slug    = PureLeaf.getSlugFromPath('blog'); // reads /blog/my-slug/ — see Pretty URL slug bug in the spec
+      const slug    = PureLeaf.getSlugFromPath('blog');
       const header  = document.getElementById('article-header');
       const content = document.getElementById('article-content');
 
@@ -96,7 +101,7 @@
       }
 
       try {
-        const res   = await fetch('/posts.json');
+        const res   = await fetch('posts.json');
         const posts = await res.json();
         const post  = posts.find(p => p.slug === slug);
 
@@ -118,7 +123,7 @@
           heroEl.innerHTML = `<img src="${PureLeaf.escape(post.image)}" alt="${PureLeaf.escape(post.title)}" loading="lazy">`;
         }
 
-        await PureLeaf.render(`/posts/${slug}.txt`, content, { skipTitle: true });
+        await PureLeaf.render(`posts/${slug}.txt`, content, { skipTitle: true });
 
       } catch (err) {
         header.innerHTML = '<p style="color:var(--danger)">Failed to load article.</p>';
