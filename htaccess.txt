@@ -1,8 +1,13 @@
 # PureLeaf — Pretty URL Rewrite Rules (Apache / cPanel)
 # Rename to .htaccess and upload to site root.
 
-Options -Indexes
 RewriteEngine On
+
+# If the request matches a real file or folder, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
 RewriteRule ^blog/([a-z0-9-]+)/?$  post.html?slug=$1  [L,QSA]
 RewriteRule ^blog/?$  blog.html  [L]
 RewriteRule ^about/?$  about.html  [L]

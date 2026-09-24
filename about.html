@@ -6,20 +6,20 @@
   <title>About — PureLeaf</title>
   <meta name="description" content="Learn how PureLeaf works — a backend-free publishing platform powered by plain text files.">
   <meta name="generator" content="PureLeaf">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/css/main.css">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">Pure<span>Leaf</span></a>
+      <a href="/" class="nav-logo">Pure<span>Leaf</span></a>
       <div class="nav-right">
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="about.html" class="active">About</a></li>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about" class="active">About</a></li>
         </ul>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <span class="icon-wrap">
@@ -34,6 +34,9 @@
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </span>
+        </button>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -54,10 +57,10 @@
 
   <footer>
     <p>Built with <strong>PureLeaf</strong> · No backend, no database, just files &nbsp;·&nbsp;
-      <a href="about.html">Learn how it works</a></p>
+      <a href="/about">Learn how it works</a></p>
   </footer>
 
-  <script src="js/engine.js"></script>
+  <script src="/js/engine.js"></script>
   <script>
     // ── Theme toggle ──────────────────────────────────────────
     const toggle = document.getElementById('theme-toggle');
@@ -66,8 +69,20 @@
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
+    // ── Mobile nav toggle ────────────────────────────────────
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    }));
+
     // ── Page content ──────────────────────────────────────────
-    PureLeaf.render('pages/about.txt', document.getElementById('page-content'));
+    PureLeaf.render('/pages/about.txt', document.getElementById('page-content'));
   </script>
 
 </body>

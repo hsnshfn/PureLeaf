@@ -3,6 +3,9 @@
  * Copyright (c) 2026 MehrAfzar TD LTD
  * Licensed under the MIT License — see LICENSE for details.
  */
+const PL_LOADING_TEXT = { fa: 'در حال بارگذاری…', en: 'Loading…', zh: '加载中…' };
+const PL_NOTFOUND_TEXT = { fa: 'محتوا یافت نشد.', en: 'Content not found.', zh: '未找到内容。' };
+
 const PureLeaf = {
   async fetchText(path) {
     const res = await fetch(path);
@@ -61,14 +64,15 @@ const PureLeaf = {
   },
   async render(txtPath, targetEl, options = {}) {
     const { skipTitle = true } = options;
-    targetEl.innerHTML = '<div class="loading">Loading content…</div>';
+    const lang = document.documentElement.lang || 'en';
+    targetEl.innerHTML = `<div class="loading">${PL_LOADING_TEXT[lang] || PL_LOADING_TEXT.en}</div>`;
     try {
       const raw = await this.fetchText(txtPath);
       const tokens = this.parseContent(raw, skipTitle);
       targetEl.innerHTML = this.renderTokens(tokens);
       targetEl.classList.add('fade-in');
     } catch (err) {
-      targetEl.innerHTML = `<p style="color:var(--danger)">Content not found.</p>`;
+      targetEl.innerHTML = `<p style="color:var(--danger)">${PL_NOTFOUND_TEXT[lang] || PL_NOTFOUND_TEXT.en}</p>`;
       console.error(err);
     }
   },
@@ -78,7 +82,21 @@ const PureLeaf = {
   getParam(name) {
     return new URLSearchParams(window.location.search).get(name);
   },
+  // Reads a slug from a pretty URL path like /blog/my-slug/ — needed because
+  // Apache/Netlify's rewrite rule (post.html?slug=$1) only rewrites the
+  // internal, server-side request; the browser's visible URL — and therefore
+  // window.location.search — stays the clean pretty path with no query
+  // string. Falls back to ?slug= for local/no-rewrite testing.
+  getSlugFromPath(prefix) {
+    const path = window.location.pathname;
+    const regex = new RegExp(`${prefix}/([^/]+?)/?$`);
+    const match = path.match(regex);
+    if (match && match[1]) return decodeURIComponent(match[1]);
+    return this.getParam('slug');
+  },
   formatDate(isoDate) {
-    return new Date(isoDate).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    const lang = document.documentElement.lang || 'en';
+    const locales = { fa: 'fa-IR', en: 'en-US', zh: 'zh-CN' };
+    return new Date(isoDate).toLocaleDateString(locales[lang] || 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   }
 };
